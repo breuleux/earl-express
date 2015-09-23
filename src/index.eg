@@ -1,0 +1,50 @@
+
+require:
+   express
+
+provide:
+   application
+
+;; provide = express
+
+
+mkasync{body} =
+   it = body.env.mark{`@`}
+   `async{
+      {req, res, next} ->
+         let ^it = {= req, = res, = next}
+         try:
+            ^body
+         catch err:
+            console.error with err.stack
+            res.send{"An error occurred."}
+         null
+   }`
+
+
+configure{app, body} =
+   `[app = ^app, ^*stmts]` where stmts = body each
+      `use{^x}` -> `app.use{^x}`
+      `[^[#symbol{k} or #value{k}] = ^v]` ->
+         `app.set{^=k, ^v}`
+      `do{^things}` -> things
+      `get{^path, ^body}` ->
+         `app.get{^path, ^mkasync{body}}`
+      `post{^path, ^body}` ->
+         `app.post{^path, ^mkasync{body}}`
+
+
+macro{express} application{match} =
+   `{^name, ^[#multi! #multi{*body}]}` ->
+      {=> let express} = @deps
+      ```
+      ^name =
+         e = [^express]{}
+         ^configure{`e`, body}
+         e
+      ```
+   arg ->
+      throw E.syntax.express.configure with
+         "Bad syntax for application macro."
+         node = arg
+
