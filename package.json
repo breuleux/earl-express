@@ -1,13 +1,17 @@
 {
   "name": "earl-express",
   "description": "Earl Grey macros for express",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "format": "cjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/breuleux/earl-express"
   },
-  "keywords": ["earlgrey", "express", "earlgrey-macros"],
+  "keywords": [
+    "earlgrey",
+    "express",
+    "earlgrey-macros"
+  ],
   "author": "Olivier Breuleux",
   "license": "MIT",
   "main": "./lib/index.js",
