@@ -5,7 +5,7 @@ require:
 provide:
    application
 
-;; provide = express
+provide = express
 
 
 mkasync{body} =
